@@ -1,0 +1,228 @@
+{
+  "createdAt": "2025-08-21T02:07:00.000Z",
+  "updatedAt": "2025-08-21T02:07:00.000Z",
+  "id": "MEqMXD2wxJmkQEo4-enhanced",
+  "name": "Daily Ad Ops Checklist v3 Enhanced",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1-5"
+            }
+          ]
+        }
+      },
+      "id": "383d4360-5361-4b25-84d2-86b5631cffc2",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -176,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "prompt-field",
+              "name": "prompt",
+              "type": "string",
+              "value": "You are a senior Meta Ads performance analyst for 38TERA. Execute a daily diagnostics checklist for account ID \"732630268714732\" and output ONLY the final report starting immediately with the title.\n\nDATA RETRIEVAL & VALIDATION:\n- Use GoMarble MCP tools to retrieve actual campaign names, creative names, and performance data\n- Verify data covers the full reporting period for yesterday\n- Use PST/PDT timezone for \"yesterday\" calculations\n- If data is missing or incomplete, mark as \"Data unavailable\" with context\n\nCAMPAIGN & CREATIVE NAMING:\n- Always use actual campaign names from the data, never placeholders like \"Campaign A\"\n- Use actual creative names from the data, never placeholders like \"Creative Name\"  \n- If names are >40 characters, truncate with \"...\"\n- Display real performance data, not placeholder values like \"X,XXX\"\n\nCRITICAL FORMATTING RULES:\n- Start immediately with: DAILY META ADS DIAGNOSTICS REPORT (no preamble)\n- Use code blocks (```) for all tables to ensure proper alignment\n- Use trend arrows: ↗️ for positive, ↘️ for negative, ➡️ for flat\n- Use status emojis: 🟢 Strong/Good, 🟡 Moderate/OK, 🔴 Poor/Alert\n- Do not include internal prompt instructions in output\n\nRequired output format:\n\n*DAILY META ADS DIAGNOSTICS REPORT*\n38TERA - Account ID: 732630268714732 - Date: [Yesterday Date]\nMomentum: ↗️ Accelerating | ➡️ Stable | ↘️ Decelerating (Based on 3-day vs 7-day trends)\n\n*1. CORE PERFORMANCE METRICS*\nYesterday vs Week-to-Date Avg vs Same Day Last Week:\n\n```\nStatus | Metric          | Yesterday | WTD Avg  | LW Avg   | WTD Trend | LW Trend\n-------|-----------------|-----------|----------|----------|-----------|----------\n✅/❌   | Total Spend     | $X,XXX    | $X,XXX   | $X,XXX   | ↗️/↘️ ±XX% | ↗️/↘️ ±XX%\n✅/❌   | CPM             | $XX.XX    | $XX.XX   | $XX.XX   | ↗️/↘️ ±XX% | ↗️/↘️ ±XX%\n✅/❌   | CPC             | $X.XX     | $X.XX    | $X.XX    | ↗️/↘️ ±XX% | ↗️/↘️ ±XX%\n✅/❌   | CTR             | X.XX%     | X.XX%    | X.XX%    | ↗️/↘️ ±XX% | ↗️/↘️ ±XX%\n✅/❌   | Conversions     | XX        | XX       | XX       | ↗️/↘️ ±XX% | ↗️/↘️ ±XX%\n✅/❌   | CAC             | $XX.XX    | $XX.XX   | $XX.XX   | ↗️/↘️ ±XX% | ↗️/↘️ ±XX%\n✅/❌   | Conversion Rate | X.XX%     | X.XX%    | X.XX%    | ↗️/↘️ ±XX% | ↗️/↘️ ±XX%\n✅/❌   | ROAS            | X.XXx     | X.XXx    | X.XXx    | ↗️/↘️ ±XX% | ↗️/↘️ ±XX%\n```\n\n*2. TOP CAMPAIGNS BY SPEND*\n\n```\nCampaign Name                           | Spend | % Total | CAC   | ROAS | Status\n----------------------------------------|-------|---------|-------|------|--------\n[Actual Campaign Name]                  | $XXX  | XX%     | $XX   | X.XX | 🟢/🟡/🔴\n[Actual Campaign Name]                  | $XXX  | XX%     | $XX   | X.XX | 🟢/🟡/🔴\n[Actual Campaign Name]                  | $XXX  | XX%     | $XX   | X.XX | 🟢/🟡/🔴\n[Actual Campaign Name]                  | $XXX  | XX%     | $XX   | X.XX | 🟢/🟡/🔴\n[Actual Campaign Name]                  | $XXX  | XX%     | $XX   | X.XX | 🟢/🟡/🔴\n```\n\n*3. CREATIVE & AD SET PERFORMANCE ALERTS*\nIssues requiring attention (any of these conditions):\n\n```\nAlert Type                              | Asset Name | Metric | Status\n----------------------------------------|------------|--------|--------\nSpend drop/spike >20% day-over-day     | [Name]     | ↘️ -XX% | 🔴/🟡\nCTR drop >30% from 7-day average       | [Name]     | ↘️ -XX% | 🔴/🟡  \nFrequency >3.0 in last 7 days          | [Name]     | X.X    | 🔴/🟡\nCPM spike >25% from account avg        | [Name]     | ↗️ +XX% | 🔴/🟡\nConv. rate drop >40% with >$100 spend  | [Name]     | ↘️ -XX% | 🔴/🟡\n```\n\nIf no alerts: \"No significant performance alerts detected 🟢\"\n\n*4. PERFORMANCE ANOMALIES* (min $500 spend for significance)\n\n🚀 BREAKTHROUGHS:\n```\nCampaign/Ad Set Name                    | Metric Change | Current | Previous | Spend\n----------------------------------------|---------------|---------|----------|-------\n[Name if >50% improvement]              | ROAS ↗️ +XX%  | X.XXx   | X.XXx    | $XXX\n[Name if >40% CAC improvement]          | CAC ↘️ -XX%   | $XX     | $XX      | $XXX\n```\n\n⚠️ CRITICAL FAILURES:\n```\nCampaign/Ad Set Name                    | Metric Change | Current | Previous | Spend  \n----------------------------------------|---------------|---------|----------|-------\n[Name if >50% decline]                  | ROAS ↘️ -XX%  | X.XXx   | X.XXx    | $XXX\n[Name if 0 conversions >$500 spend]    | Conv. ↘️ 0    | 0       | XX       | $XXX\n```\n\nIf no significant anomalies: Omit this entire section.\n\n*5. AUDIENCE ANALYSIS*\n\n```\nSegment      | Spend | % Total | CAC   | ROAS | Trend     | Status\n-------------|-------|---------|-------|------|-----------|--------\nRemarketing  | $XXX  | XX%     | $XX   | X.XX | ↗️/↘️ ±XX% | 🟢/🟡/🔴\nProspecting  | $XXX  | XX%     | $XX   | X.XX | ↗️/↘️ ±XX% | 🟢/🟡/🔴\n```\n\n*STATUS SUMMARY:*\n🟢 ALL SYSTEMS NORMAL / 🟡 ATTENTION NEEDED / 🔴 PRIORITY ISSUES\n\nIssues flagged: [X]\nTotal spend: $[X,XXX]\nEfficiency Score: [A/B/C/D/F] - XX% of budget on profitable campaigns (ROAS >1)\n\n*ACTION ITEMS (by impact):*\n\n🔴 IMMEDIATE - Est. Impact: $XXX/day\n• [Specific urgent action with dollar impact]\n• [Critical issue requiring same-day attention]\n\n🟡 THIS WEEK - Est. Impact: $XXX/week\n• [Medium priority optimization with potential value]\n• [Performance improvement opportunity]\n\n🟢 MONITOR - Current Value: $XXX/week\n• [High-performing elements to maintain]\n• [Positive trends to continue tracking]\n\n*DAILY COMPARISON:*\nVS YESTERDAY: Spend ↗️/↘️ ±XX% | CAC ↗️/↘️ ±XX% | ROAS ↗️/↘️ ±X.XXx\nVS LAST [SAME DAY]: Spend ↗️/↘️ ±XX% | CAC ↗️/↘️ ±XX% | ROAS ↗️/↘️ ±X.XXx\nTREND: Improving/Stable/Declining\n\n---\nData timestamp: [Last updated time] | Report generated: [Current timestamp]\n\nPERFORMANCE THRESHOLDS:\n- ROAS: >1.0 = 🟢, 0.8-1.0 = 🟡, <0.8 = 🔴\n- CAC trends: improving = 🟢, stable = 🟡, worsening = 🔴\n- Frequency: <2.0 = 🟢, 2.0-3.0 = 🟡, >3.0 = 🔴\n- CPM changes: <15% = 🟢, 15-25% = 🟡, >25% = 🔴\n\nAnalyze the actual account data and populate all sections with real numbers and names. Only include anomaly sections if statistically significant changes are detected."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "335a5088-5618-49ec-aed9-03709d5c3aa2",
+      "name": "Enhanced Report Prompt",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "options": {
+          "systemMessage": "You are an expert Meta Ads analyst with access to comprehensive advertising data through GoMarble MCP tools. Retrieve actual campaign names and performance data. Execute the analysis checklist and output ONLY the final formatted report starting immediately with the title. Use visual indicators (emojis, arrows) for quick scanning. No preamble or commentary. Include anomaly detection only for statistically significant changes.",
+          "maxIterations": 25
+        }
+      },
+      "id": "de17ddef-ae9e-4c78-a46c-a2a1e8ea8cfd",
+      "name": "Enhanced AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        304
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://apps.gomarble.ai/mcp-api/sse",
+        "authentication": "bearerAuth"
+      },
+      "id": "3778682a-4ebd-431b-946b-d6f04fe8edd3",
+      "name": "GoMarble MCP Client",
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.1,
+      "position": [
+        496,
+        544
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "xdh6Yp722ibHs9Nd",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-20250514",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "a20c3547-4cb1-40b0-888d-78993c97343c",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        336,
+        544
+      ],
+      "credentials": {
+        "anthropicApi": {
+          "id": "6L1pdyKeE7yG7BA1",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C098MCUF6QJ",
+          "mode": "list",
+          "cachedResultName": "internal_38tera_reports"
+        },
+        "text": "={{ $json.output }}",
+        "otherOptions": {
+          "mrkdwn": true
+        }
+      },
+      "id": "da00ef5e-a1ff-40e0-ad48-bdb13abb800f",
+      "name": "Slack Post",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        736,
+        304
+      ],
+      "webhookId": "56abb230-062d-4170-a990-bd8858da6b71",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "kPX3XYbf07UU7kTC",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Enhanced Report Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enhanced Report Prompt": {
+      "main": [
+        [
+          {
+            "node": "Enhanced AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enhanced AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Slack Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GoMarble MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "Enhanced AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Enhanced AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "enhanced-v1",
+  "triggerCount": 0,
+  "tags": [
+    {
+      "createdAt": "2025-07-31T23:44:45.869Z",
+      "updatedAt": "2025-07-31T23:44:45.869Z",
+      "id": "APTZfP2LUSQ5avFz",
+      "name": "ads-automation"
+    },
+    {
+      "createdAt": "2025-08-21T02:07:00.000Z",
+      "updatedAt": "2025-08-21T02:07:00.000Z",
+      "id": "enhanced-version",
+      "name": "enhanced"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "name": "Test Anthropic Model",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "start-node",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger", 
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "test-prompt",
+              "name": "prompt",
+              "type": "string",
+              "value": "Hello! This is a simple test of the Anthropic Claude model. Please respond with: 1) Your model version, 2) Current date/time, 3) A simple greeting. Keep response under 100 words."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "test-prompt-node", 
+      "name": "Test Prompt",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "options": {
+          "systemMessage": "You are a helpful assistant testing connectivity. Respond concisely and include the requested information.",
+          "maxIterations": 1
+        }
+      },
+      "id": "test-agent",
+      "name": "Test AI Agent", 
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-3-5-sonnet-20241022",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "anthropic-model",
+      "name": "Updated Anthropic Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic", 
+      "typeVersion": 1.3,
+      "position": [650, 400],
+      "credentials": {
+        "anthropicApi": {
+          "id": "6L1pdyKeE7yG7BA1",
+          "name": "Anthropic account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{"node": "Test Prompt", "type": "main", "index": 0}]]
+    },
+    "Test Prompt": {
+      "main": [[{"node": "Test AI Agent", "type": "main", "index": 0}]]
+    },
+    "Updated Anthropic Model": {
+      "ai_languageModel": [[{"node": "Test AI Agent", "type": "ai_languageModel", "index": 0}]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

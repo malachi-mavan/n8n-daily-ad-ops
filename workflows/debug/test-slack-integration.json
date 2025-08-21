@@ -1,0 +1,71 @@
+{
+  "name": "Test Slack Integration",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "start-node",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "test-message",
+              "name": "message",
+              "type": "string",
+              "value": "🧪 **Slack Integration Test**\n\nThis is a test message from the n8n Daily Ad Ops workflow debugging process.\n\n✅ If you can see this message, the Slack integration is working correctly.\n\nTest conducted at: {{ new Date().toISOString() }}\nWorkflow: Daily Ad Ops Checklist v3 Debug"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "test-message-node",
+      "name": "Test Message",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C098MCUF6QJ",
+          "mode": "list",
+          "cachedResultName": "internal_38tera_reports"
+        },
+        "text": "={{ $json.message }}",
+        "otherOptions": {
+          "mrkdwn": true
+        }
+      },
+      "id": "slack-post-node",
+      "name": "Slack Test Post",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [650, 300],
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "kPX3XYbf07UU7kTC",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{"node": "Test Message", "type": "main", "index": 0}]]
+    },
+    "Test Message": {
+      "main": [[{"node": "Slack Test Post", "type": "main", "index": 0}]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

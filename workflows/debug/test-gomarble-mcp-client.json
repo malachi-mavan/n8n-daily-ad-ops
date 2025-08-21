@@ -1,0 +1,103 @@
+{
+  "name": "Test GoMarble MCP Client",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "start-node",
+      "name": "Manual Trigger", 
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "test-prompt",
+              "name": "prompt",
+              "type": "string", 
+              "value": "Test connection to GoMarble MCP. Please list available tools or return basic connection status."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "test-prompt-node",
+      "name": "Test Prompt",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "options": {
+          "systemMessage": "You are testing the GoMarble MCP connection. Respond with connection status and available tools.",
+          "maxIterations": 5
+        }
+      },
+      "id": "test-agent",
+      "name": "Test AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://apps.gomarble.ai/mcp-api/sse",
+        "authentication": "bearerAuth"
+      },
+      "id": "gomarble-mcp",
+      "name": "GoMarble MCP Client",
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.1,
+      "position": [650, 500],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "xdh6Yp722ibHs9Nd",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-3-5-sonnet-20241022",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "anthropic-model",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [650, 400],
+      "credentials": {
+        "anthropicApi": {
+          "id": "6L1pdyKeE7yG7BA1",
+          "name": "Anthropic account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{"node": "Test Prompt", "type": "main", "index": 0}]]
+    },
+    "Test Prompt": {
+      "main": [[{"node": "Test AI Agent", "type": "main", "index": 0}]]
+    },
+    "GoMarble MCP Client": {
+      "ai_tool": [[{"node": "Test AI Agent", "type": "ai_tool", "index": 0}]]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [[{"node": "Test AI Agent", "type": "ai_languageModel", "index": 0}]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
