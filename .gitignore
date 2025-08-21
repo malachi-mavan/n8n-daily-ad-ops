@@ -1,0 +1,57 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# API Keys and Credentials
+config/mcp-config.json
+*.key
+*.pem
+*.cert
+
+# n8n workflow backups
+workflows/*.backup.json
+workflows/debug/*.backup.json
+
+# Node modules (if using npm)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Logs
+logs/
+*.log
+
+# Build outputs
+dist/
+build/
+out/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Local notes
+notes.md
+TODO.md
+scratch/
+
+# Example outputs and test data
+docs/examples/
+examples/
+*.example.md
