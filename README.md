@@ -102,6 +102,7 @@ n8n-builder/
 
 ## Resources
 
+- **GitHub Repository**: https://github.com/malachi-mavan/n8n-daily-ad-ops
 - [n8n Documentation](https://docs.n8n.io/)
 - [n8n MCP GitHub](https://github.com/czlonkowski/n8n-mcp)
 - [Claude Code Documentation](https://claude.ai/code)
