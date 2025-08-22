@@ -30,6 +30,7 @@ yarn-error.log*
 # Temporary files
 *.tmp
 *.temp
+temp-*
 tmp/
 temp/
 
