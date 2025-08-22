@@ -1,0 +1,105 @@
+# Project Template .gitignore
+# Based on MAVAN agents project optimizations
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime outputs (CRITICAL - never commit these)
+outputs/
+output/
+cache/
+*.output.json
+*.output.txt
+*.output.md
+
+# Credentials and sensitive files
+credentials.json
+token.json
+*.key
+*.pem
+*.p12
+service-account-*.json
+config/*.json
+!config/*.example.json
+!config/*.template.json
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime state
+data/
+state.json
+*.state.json
+recent-*.json
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Test outputs
+coverage/
+.nyc_output/
+test-results/
+test-outputs/
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Documentation outputs
+docs/outputs/
+docs/generated/
+
+# Agent-specific outputs
+agents/*/output/
+agents/*/data/
+agents/*/cache/
+
+# Orchestrator outputs
+orchestrators/*/output/
+orchestrators/*/cache/
+
+# Knowledge base outputs
+knowledge-base/outputs/
+knowledge-base/cache/
+
+# Script outputs
+scripts/outputs/
+scripts/cache/

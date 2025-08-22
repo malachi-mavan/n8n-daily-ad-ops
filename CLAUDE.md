@@ -65,9 +65,10 @@ The workflow has been enhanced to address key issues:
 ### Phase 3: Build
 - Clear context with `/cle` command
 - Read both `docs/usecase.md` and `docs/node_research.md`
-- Create `workflows/workflow.json` using researched nodes
-- Use `n8n_create_workflow()` to push to n8n platform
+- Create `workflows/workflow-vX.json` using researched nodes (X = version number)
+- **IMPORTANT**: Use `n8n_create_workflow()` with NEW workflow names, never update existing ones
 - Focus only on nodes identified during research phase
+- **Fresh Instance Strategy**: Each iteration gets a new workflow name to preserve rollback capability
 
 ### Phase 4: Validate
 - Start a fresh session with `/cle`
@@ -77,6 +78,13 @@ The workflow has been enhanced to address key issues:
 - Fix any configuration mismatches
 
 ## Critical Workflow Rules
+
+### Fresh Instance Strategy (NEW)
+- **ALWAYS create new workflow instances** instead of replacing existing ones
+- **NEVER update existing workflows** - this preserves rollback capability
+- **Use descriptive naming**: `workflow-name-v1.json`, `workflow-name-v2.json`, etc.
+- **Benefits**: Clean slate every time, no hidden state, better testing, easier debugging
+- **Implementation**: Use `n8n_create_workflow()` with new names, never `n8n_update_partial_workflow()`
 
 ### Delete and Recreate Strategy
 - ALWAYS delete existing workflow before creating a new version
@@ -148,8 +156,9 @@ npx n8n-mcp --version
 ### Important Files to Track
 - `docs/usecase.md` - Always create for new workflows
 - `docs/node_research.md` - Document all node research
-- `workflows/workflow.json` - Main workflow file
+- `workflows/workflow-vX.json` - Main workflow files (X = version number)
 - `workflows/debug/*.json` - Debugging workflows
+- **Version naming**: Use descriptive names like `daily-ad-ops-v3.json`, `daily-ad-ops-v3-enhanced.json`
 
 ### Files to Read on Startup
 When starting a new session, check for:
@@ -169,6 +178,8 @@ When starting a new session, check for:
 5. **Use OAuth** - Avoid manual API key management
 6. **Isolate problems** - Debug nodes individually
 7. **Version control** - Save workflow versions before major changes
+8. **Fresh instances** - Create new workflow names for each iteration, never update existing ones
+9. **Preserve rollback** - Keep previous versions active in n8n for easy comparison and rollback
 
 ## Important Notes
 
@@ -192,6 +203,18 @@ When starting a new session, check for:
 - **v3 Original**: Basic daily report with placeholder campaign names
 - **v3 Enhanced**: Real campaign names, multi-factor alerts, anomaly detection
 - **Key Improvements**: Frequency monitoring (7-day >3.0), CPM spikes (>25%), statistical significance ($500+ spend)
+
+### Fresh Instance Strategy Example
+**Instead of updating existing workflows:**
+- ❌ `n8n_update_partial_workflow()` - Loses rollback capability
+- ❌ Replacing workflow content - Risk of breaking working version
+
+**Always create new instances:**
+- ✅ `n8n_create_workflow("daily-ad-ops-v3-enhanced")` - New workflow, old one preserved
+- ✅ `n8n_create_workflow("daily-ad-ops-v3-debug")` - Debug version, production safe
+- ✅ `n8n_create_workflow("daily-ad-ops-v4")` - Next major version, all previous preserved
+
+**Result**: You can always roll back to any previous working version in n8n!
 
 ### Future Considerations
 - **BigQuery Migration**: Planned alternative to GoMarble MCP for direct data access

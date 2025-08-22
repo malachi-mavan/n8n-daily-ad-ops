@@ -1,0 +1,53 @@
+{
+  "name": "project-name",
+  "version": "1.0.0",
+  "description": "Project description based on template structure",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "node tests/runner.js",
+    "test:quick": "node tests/quick-validation.js",
+    "test:full": "node tests/full-validation.js",
+    "test:phase": "node tests/phases/current-phase.js",
+    "setup": "node scripts/setup.js",
+    "update-docs": "node scripts/update-docs.js",
+    "validate": "node scripts/validate-setup.js",
+    "security-check": "node scripts/check-security.js",
+    "analyze": "node scripts/analyze-system.js",
+    "clean": "rm -rf outputs/ cache/ data/",
+    "clean:all": "rm -rf outputs/ cache/ data/ node_modules/ && npm install",
+    "deploy": "node scripts/deploy.js",
+    "backup": "node scripts/backup.js",
+    "status": "node scripts/status.js"
+  },
+  "keywords": [
+    "template",
+    "project-structure",
+    "best-practices"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "axios": "^1.0.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0",
+    "jest": "^29.0.0",
+    "eslint": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/username/project-name.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/project-name/issues"
+  },
+  "homepage": "https://github.com/username/project-name#readme"
+}
