@@ -1,0 +1,117 @@
+{
+  "clients": [
+    {
+      "client_name": "38TERA",
+      "account_type": "meta",
+      "account_id": "732630268714732",
+      "gomarble_account_id": "act_732630268714732",
+      "slack_channel": "internal_38tera_reports",
+      "slack_channel_id": "C098MCUF6QJ",
+      "error_email": "malachi@mavan.com",
+      "priority_events": "Purchases, Add to Cart, Initiate Checkout",
+      "business_type": "e-commerce",
+      "thresholds": {
+        "ROAS_GOOD": ">1.0",
+        "ROAS_OK": "0.8-1.0",
+        "CAC_TARGET": "$100",
+        "FREQUENCY_MAX": "3.0",
+        "NO_CONV_SPEND_MIN": "$250",
+        "HIGH_CAC_THRESHOLD": "$150",
+        "CTR_DROP_THRESHOLD": "30%",
+        "CPM_SPIKE_THRESHOLD": "25%"
+      }
+    },
+    {
+      "client_name": "Velocity Global",
+      "account_type": "meta",
+      "account_id": "875613839312619",
+      "gomarble_account_id": "act_875613839312619",
+      "slack_channel": "internal_velocityglobal_reports",
+      "slack_channel_id": "C09930US3MX",
+      "error_email": "malachi@mavan.com",
+      "priority_events": "Lead (Consult an Expert Form)",
+      "business_type": "b2b",
+      "thresholds": {
+        "CPL_TARGET": "$200",
+        "FREQUENCY_MAX": "3.0",
+        "NO_CONV_SPEND_MIN": "$250",
+        "HIGH_CPL_THRESHOLD": "$300",
+        "CTR_DROP_THRESHOLD": "30%",
+        "CPM_SPIKE_THRESHOLD": "25%"
+      }
+    },
+    {
+      "client_name": "Fireflies",
+      "account_type": "google",
+      "account_id": "817-799-9088",
+      "gomarble_account_id": "8177999088",
+      "slack_channel": "internal_fireflies_reports",
+      "slack_channel_id": "C098JJHSUEA",
+      "error_email": "malachi@mavan.com",
+      "priority_events": "Trial Sign Up, Demo Request, Contact",
+      "business_type": "saas",
+      "thresholds": {
+        "ROAS_GOOD": ">1.5",
+        "ROAS_OK": "1.0-1.5",
+        "CAC_TARGET": "$150",
+        "FREQUENCY_MAX": "3.0",
+        "NO_CONV_SPEND_MIN": "$200",
+        "HIGH_CAC_THRESHOLD": "$200",
+        "CTR_DROP_THRESHOLD": "30%",
+        "CPM_SPIKE_THRESHOLD": "25%"
+      }
+    },
+    {
+      "client_name": "Franki",
+      "account_type": "meta",
+      "account_id": "514315682954036",
+      "gomarble_account_id": "act_514315682954036",
+      "slack_channel": "internal_franki_reports",
+      "slack_channel_id": "C098MGGESBC",
+      "error_email": "malachi@mavan.com",
+      "priority_events": "omni_app_install, add_payment_info",
+      "business_type": "app",
+      "thresholds": {
+        "CPI_TARGET": "$5.00",
+        "CPCC_TARGET": "$50.00",
+        "FREQUENCY_MAX": "3.0",
+        "NO_CONV_SPEND_MIN": "$250",
+        "HIGH_CPI_THRESHOLD": "$10.00",
+        "HIGH_CPCC_THRESHOLD": "$75.00",
+        "CTR_DROP_THRESHOLD": "30%",
+        "CPM_SPIKE_THRESHOLD": "25%"
+      }
+    },
+    {
+      "client_name": "Franki B2B",
+      "account_type": "meta",
+      "account_id": "815256732728440",
+      "gomarble_account_id": "act_815256732728440",
+      "slack_channel": "internal_franki_b2b_reports",
+      "slack_channel_id": "C09C1UPJHS5",
+      "error_email": "malachi@mavan.com",
+      "priority_events": "Lead, InitiateCheckout",
+      "business_type": "b2b",
+      "thresholds": {
+        "CPL_TARGET": "$400",
+        "HIGH_CPL_THRESHOLD": "$800",
+        "CPIC_TARGET": "$200",
+        "HIGH_CPIC_THRESHOLD": "$400",
+        "FREQUENCY_MAX": "5.0",
+        "FREQUENCY_WARNING": "7.0",
+        "NO_CONV_SPEND_MIN": "$250",
+        "CTR_DROP_THRESHOLD": "30%",
+        "CPM_SPIKE_THRESHOLD": "25%"
+      }
+    }
+  ],
+  "default_settings": {
+    "schedule": "0 9 * * 1,5",
+    "schedule_description": "Monday/Friday 9AM PST",
+    "platform": "Meta Ads",
+    "gomarble_credential_suffix": "GoMarble",
+    "slack_credential": "Slack account",
+    "smtp_credential": "Default SMTP",
+    "anthropic_credential": "Anthropic account"
+  }
+}

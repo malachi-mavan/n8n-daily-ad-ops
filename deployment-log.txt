@@ -1,0 +1,38 @@
+# Deployment Log - Fri Aug 22 13:41:54 PDT 2025
+Client|Main_Workflow_ID|Error_Handler_ID
+38TERA|[0;34mDeploying Main Workflow for 38TERA...[0m
+[0;32m✅ Deployed Main Workflow for 38TERA[0m
+   Workflow ID: J0VihhB8e5qa2bau
+   URL: https://mavan.app.n8n.cloud/workflow/J0VihhB8e5qa2bau
+J0VihhB8e5qa2bau|[0;34mDeploying Error Handler for 38TERA...[0m
+[0;32m✅ Deployed Error Handler for 38TERA[0m
+   Workflow ID: RN0GHIIqonmNa0kd
+   URL: https://mavan.app.n8n.cloud/workflow/RN0GHIIqonmNa0kd
+RN0GHIIqonmNa0kd
+Velocity Global|[0;34mDeploying Main Workflow for Velocity Global...[0m
+[0;32m✅ Deployed Main Workflow for Velocity Global[0m
+   Workflow ID: KzcmJRf1JQPT9uDt
+   URL: https://mavan.app.n8n.cloud/workflow/KzcmJRf1JQPT9uDt
+KzcmJRf1JQPT9uDt|[0;34mDeploying Error Handler for Velocity Global...[0m
+[0;32m✅ Deployed Error Handler for Velocity Global[0m
+   Workflow ID: couqljdYVk8fpAOf
+   URL: https://mavan.app.n8n.cloud/workflow/couqljdYVk8fpAOf
+couqljdYVk8fpAOf
+Franki|[0;34mDeploying Main Workflow for Franki...[0m
+[0;32m✅ Deployed Main Workflow for Franki[0m
+   Workflow ID: FpMzqnxGGzfYvOo2
+   URL: https://mavan.app.n8n.cloud/workflow/FpMzqnxGGzfYvOo2
+FpMzqnxGGzfYvOo2|[0;34mDeploying Error Handler for Franki...[0m
+[0;32m✅ Deployed Error Handler for Franki[0m
+   Workflow ID: EGHPrN2DR4ySBZNm
+   URL: https://mavan.app.n8n.cloud/workflow/EGHPrN2DR4ySBZNm
+EGHPrN2DR4ySBZNm
+Franki B2B|[0;34mDeploying Main Workflow for Franki B2B...[0m
+[0;32m✅ Deployed Main Workflow for Franki B2B[0m
+   Workflow ID: Y53KKM9A2hZed1T6
+   URL: https://mavan.app.n8n.cloud/workflow/Y53KKM9A2hZed1T6
+Y53KKM9A2hZed1T6|[0;34mDeploying Error Handler for Franki B2B...[0m
+[0;32m✅ Deployed Error Handler for Franki B2B[0m
+   Workflow ID: uVvkcnAGFItqzNyM
+   URL: https://mavan.app.n8n.cloud/workflow/uVvkcnAGFItqzNyM
+uVvkcnAGFItqzNyM

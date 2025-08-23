@@ -1,0 +1,142 @@
+# Meta Ads Diagnostics v9 - Client Configuration Template
+
+## Multi-Client Configuration Variables
+
+Use this template to customize the v9 workflow for each client. Simply replace the values in the workflow JSON files.
+
+### Main Workflow Configuration
+
+Update the `clientConfig` object in the "v9 Client Configuration" node:
+
+```json
+{
+  "CLIENT_NAME": "[CLIENT_NAME]",
+  "PLATFORM": "Meta Ads",
+  "ACCOUNT_ID": "[CLIENT_ACCOUNT_ID]",
+  "GOMARBLE_CREDENTIAL": "[CLIENT_GOMARBLE_CREDENTIAL_NAME]",
+  "SLACK_CHANNEL": "[CLIENT_SLACK_CHANNEL]",
+  "ERROR_SLACK_CHANNEL": "[CLIENT_ERROR_SLACK_CHANNEL]",
+  "ERROR_EMAIL": "[CLIENT_ERROR_EMAIL]",
+  "PRIORITY_EVENTS": "[CLIENT_PRIORITY_EVENTS]",
+  "REPORT_SCHEDULE": "[CLIENT_SCHEDULE]"
+}
+```
+
+### Error Handler Configuration
+
+Update the `errorConfig` object in the "Extract Error Details" node:
+
+```json
+{
+  "CLIENT_NAME": "[CLIENT_NAME]",
+  "MAIN_WORKFLOW_NAME": "[CLIENT_NAME] - Meta Ads Diagnostics v9",
+  "MAIN_WORKFLOW_ID": "[WORKFLOW_ID_AFTER_DEPLOYMENT]",
+  "ERROR_SLACK_CHANNEL": "[CLIENT_ERROR_SLACK_CHANNEL]",
+  "ERROR_EMAIL": "[CLIENT_ERROR_EMAIL]",
+  "PLATFORM": "Meta Ads",
+  "ACCOUNT_ID": "[CLIENT_ACCOUNT_ID]"
+}
+```
+
+### Performance Thresholds (Optional Customization)
+
+Update the `thresholds` object if client has specific targets:
+
+```json
+{
+  "ROAS_GOOD": ">1.0",
+  "ROAS_OK": "0.8-1.0", 
+  "CAC_TARGET": "$100",
+  "FREQUENCY_MAX": "3.0",
+  "NO_CONV_SPEND_MIN": "$250",
+  "HIGH_CAC_THRESHOLD": "$150",
+  "CTR_DROP_THRESHOLD": "30%",
+  "CPM_SPIKE_THRESHOLD": "25%"
+}
+```
+
+## Example Client Configurations
+
+### E-commerce Client
+```
+CLIENT_NAME: ACME Store
+ACCOUNT_ID: 123456789012345
+SLACK_CHANNEL: acme_ads_reports
+ERROR_SLACK_CHANNEL: acme_alerts
+ERROR_EMAIL: manager@acmestore.com
+PRIORITY_EVENTS: Purchase, Add to Cart, Initiate Checkout
+CAC_TARGET: $50
+ROAS_GOOD: >2.0
+```
+
+### Lead Generation Client
+```
+CLIENT_NAME: TechLeads Pro
+ACCOUNT_ID: 987654321098765
+SLACK_CHANNEL: techleads_marketing
+ERROR_SLACK_CHANNEL: techleads_alerts
+ERROR_EMAIL: marketing@techleads.com
+PRIORITY_EVENTS: Lead, Contact, Demo Request
+CAC_TARGET: $200
+ROAS_GOOD: >1.5
+```
+
+### SaaS Client
+```
+CLIENT_NAME: CloudSoft SaaS
+ACCOUNT_ID: 456789123456789
+SLACK_CHANNEL: cloudsoft_growth
+ERROR_SLACK_CHANNEL: cloudsoft_alerts
+ERROR_EMAIL: growth@cloudsoft.com
+PRIORITY_EVENTS: Trial Sign Up, Demo Request, Contact
+CAC_TARGET: $150
+ROAS_GOOD: >1.2
+```
+
+## Deployment Checklist
+
+### Before Deployment:
+- [ ] Update main workflow client configuration
+- [ ] Update error handler client configuration
+- [ ] Create/verify GoMarble credential in n8n
+- [ ] Create/verify Slack OAuth credential in n8n
+- [ ] Create/verify SMTP credential for email alerts
+- [ ] Test Slack channel permissions
+- [ ] Verify GoMarble account access
+
+### After Deployment:
+- [ ] Record main workflow ID in error handler configuration
+- [ ] Test main workflow manually
+- [ ] Test error handler by simulating failure
+- [ ] Activate both workflows
+- [ ] Document client-specific setup in deployment log
+
+## Credential Management
+
+### Required n8n Credentials:
+1. **GoMarble Bearer Auth**: `[CLIENT_NAME] GoMarble`
+2. **Slack OAuth2**: `[CLIENT_NAME] Slack` or use shared credential
+3. **SMTP Email**: `Default SMTP` or `[CLIENT_NAME] Email`
+4. **Anthropic API**: Use shared credential with sufficient limits
+
+### Security Notes:
+- Never include actual API tokens in workflow JSON
+- Use descriptive credential names for easy identification
+- Regularly rotate GoMarble and other API tokens
+- Limit Slack bot permissions to required channels only
+
+## Troubleshooting Common Issues
+
+### Main Workflow Failures:
+1. **GoMarble Connection**: Check bearer token and account access
+2. **Anthropic Limits**: Verify API usage and rate limits
+3. **Slack Permissions**: Ensure bot can post to specified channels
+4. **Data Availability**: Confirm account has recent ad activity
+
+### Error Handler Issues:
+1. **Webhook Not Triggering**: Verify webhook ID configuration
+2. **Email Not Sending**: Check SMTP credentials and settings
+3. **Missing Error Data**: Ensure proper error context passing
+4. **Duplicate Alerts**: Check error handler workflow activation
+
+This template ensures consistent, secure, and maintainable client deployments across the entire system.

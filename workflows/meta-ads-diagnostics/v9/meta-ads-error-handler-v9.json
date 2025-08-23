@@ -1,0 +1,282 @@
+{
+  "name": "38TERA - Meta Ads Diagnostics v9.2 — Error Handler",
+  "nodes": [
+    {
+      "parameters": {
+        "events": [
+          "workflow.error"
+        ],
+        "filter": {
+          "workflowId": "4xdcCrMqYNyfnFf0"
+        }
+      },
+      "id": "n8n-trigger-v9",
+      "name": "n8n Trigger",
+      "type": "n8n-nodes-base.n8nTrigger",
+      "typeVersion": 1,
+      "position": [200, 340]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "error-config-v9",
+              "name": "errorConfig",
+              "type": "object",
+              "value": {
+                "CLIENT_NAME": "38TERA",
+                "MAIN_WORKFLOW_NAME": "38TERA - Meta Ads Diagnostics v9",
+                "MAIN_WORKFLOW_ID": "4xdcCrMqYNyfnFf0",
+                "ERROR_SLACK_CHANNEL": "internal_38tera_reports",
+                "ERROR_EMAIL": "malachi@mavan.com",
+                "PLATFORM": "Meta Ads",
+                "ACCOUNT_ID": "732630268714732"
+              }
+            },
+            {
+              "id": "error-details-extracted",
+              "name": "errorDetails",
+              "type": "object",
+              "value": {
+                "originalWorkflowName": "={{ $json.errorConfig.MAIN_WORKFLOW_NAME }}",
+                "executionId": "={{ $json['executionId'] || $json['id'] || $json['data']?.['id'] || 'Unknown' }}",
+                "failedNode": "={{ $json['nodeName'] || $json['node'] || $json['failedNode'] || 'Unknown Node' }}",
+                "errorMessage": "={{ $json['error']?.['message'] || $json['errorMessage'] || $json['message'] || JSON.stringify($json['error']) || 'Unknown Error' }}",
+                "executionUrl": "={{ 'https://mavan.app.n8n.cloud/executions/' + ($json['executionId'] || $json['id'] || $json['data']?.['id'] || 'unknown') }}",
+                "timestamp": "={{ $now }}",
+                "errorType": "={{ $json['error']?.['type'] || 'Workflow Failure' }}",
+                "retryCount": "={{ $json['retryCount'] || 0 }}"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "extract-error-details-v9",
+      "name": "Extract Error Details",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 340]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "retry-check",
+              "leftValue": "={{ $json.errorDetails.retryCount }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-retry-needed",
+      "name": "Check if First Failure",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [720, 340]
+    },
+    {
+      "parameters": {
+        "mode": "until",
+        "continueOnTimeout": true,
+        "waitTime": 30,
+        "waitUnit": "seconds"
+      },
+      "id": "wait-before-retry",
+      "name": "Wait 30s Before Retry",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [980, 200]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C098MCUF6QJ",
+          "mode": "list",
+          "cachedResultName": "internal_38tera_reports"
+        },
+        "text": "⚠️ *WORKFLOW RETRY NOTIFICATION*\n\n*Workflow*: {{ $json.errorConfig.MAIN_WORKFLOW_NAME }}\n*Client*: {{ $json.errorConfig.CLIENT_NAME }}\n*Failed Node*: {{ $json.errorDetails.failedNode }}\n*Error*: {{ $json.errorDetails.errorMessage }}\n*Time*: {{ $json.errorDetails.timestamp }}\n\n🔄 *Retrying in 30 seconds...*\n\nIf this retry fails, you'll receive a full alert with troubleshooting information.",
+        "otherOptions": {
+          "mrkdwn": true
+        }
+      },
+      "id": "slack-retry-notification",
+      "name": "Slack Retry Notification",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [1240, 200],
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "kPX3XYbf07UU7kTC",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "final-error-details",
+              "name": "finalErrorDetails",
+              "type": "object",
+              "value": {
+                "workflowName": "={{ $json.errorConfig.MAIN_WORKFLOW_NAME }}",
+                "clientName": "={{ $json.errorConfig.CLIENT_NAME }}",
+                "platform": "={{ $json.errorConfig.PLATFORM }}",
+                "accountId": "={{ $json.errorConfig.ACCOUNT_ID }}",
+                "failedNode": "={{ $json.errorDetails.failedNode }}",
+                "errorMessage": "={{ $json.errorDetails.errorMessage }}",
+                "errorType": "={{ $json.errorDetails.errorType }}",
+                "executionId": "={{ $json.errorDetails.executionId }}",
+                "executionUrl": "={{ $json.errorDetails.executionUrl }}",
+                "timestamp": "={{ $json.errorDetails.timestamp }}",
+                "troubleshootingHints": "1. Check GoMarble MCP connection\n2. Verify Anthropic API limits\n3. Confirm Slack channel permissions\n4. Review account access tokens\n5. Check n8n execution logs"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "prepare-final-alert",
+      "name": "Prepare Final Alert",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [980, 480]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C098MCUF6QJ",
+          "mode": "list",
+          "cachedResultName": "internal_38tera_reports"
+        },
+        "text": "🚨 *CRITICAL: WORKFLOW FAILED AFTER RETRY*\n\n*Workflow*: {{ $json.finalErrorDetails.workflowName }}\n*Client*: {{ $json.finalErrorDetails.clientName }}\n*Platform*: {{ $json.finalErrorDetails.platform }}\n*Account ID*: {{ $json.finalErrorDetails.accountId }}\n\n*❌ FAILURE DETAILS:*\n• *Failed Node*: {{ $json.finalErrorDetails.failedNode }}\n• *Error Type*: {{ $json.finalErrorDetails.errorType }}\n• *Error Message*: {{ $json.finalErrorDetails.errorMessage }}\n• *Time*: {{ $json.finalErrorDetails.timestamp }}\n• *Execution ID*: {{ $json.finalErrorDetails.executionId }}\n\n*🔧 TROUBLESHOOTING STEPS:*\n{{ $json.finalErrorDetails.troubleshootingHints }}\n\n*🔗 DEBUG LINK*: {{ $json.finalErrorDetails.executionUrl }}\n\n*⚡ IMMEDIATE ACTION REQUIRED*\nThe automated reporting system is down. Manual intervention needed.",
+        "otherOptions": {
+          "mrkdwn": true
+        }
+      },
+      "id": "slack-final-alert",
+      "name": "Slack Final Alert",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [1240, 420],
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "kPX3XYbf07UU7kTC",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "noreply@mavan.com",
+        "toEmail": "={{ $json.errorConfig.ERROR_EMAIL }}",
+        "subject": "[CRITICAL] {{ $json.errorConfig.CLIENT_NAME }} - Meta Ads Diagnostics Failed",
+        "text": "CRITICAL WORKFLOW FAILURE\n\nWorkflow: {{ $json.finalErrorDetails.workflowName }}\nClient: {{ $json.finalErrorDetails.clientName }}\nPlatform: {{ $json.finalErrorDetails.platform }}\nAccount ID: {{ $json.finalErrorDetails.accountId }}\n\nFAILURE DETAILS:\n- Failed Node: {{ $json.finalErrorDetails.failedNode }}\n- Error Type: {{ $json.finalErrorDetails.errorType }}\n- Error Message: {{ $json.finalErrorDetails.errorMessage }}\n- Time: {{ $json.finalErrorDetails.timestamp }}\n- Execution ID: {{ $json.finalErrorDetails.executionId }}\n\nTROUBLESHOOTING STEPS:\n{{ $json.finalErrorDetails.troubleshootingHints }}\n\nDEBUG LINK:\n{{ $json.finalErrorDetails.executionUrl }}\n\nIMMEDIATE ACTION REQUIRED:\nThe automated reporting system for {{ $json.finalErrorDetails.clientName }} is down. The workflow retried once after 30 seconds and still failed. Manual intervention is needed to restore service.\n\nThis affects the Monday/Friday 9AM PST automated Meta Ads diagnostics reports."
+      },
+      "id": "email-final-alert",
+      "name": "Email Final Alert",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "position": [1240, 580],
+      "credentials": {
+        "smtp": {
+          "id": "default-smtp",
+          "name": "Default SMTP"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "n8n Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract Error Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Error Details": {
+      "main": [
+        [
+          {
+            "node": "Check if First Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if First Failure": {
+      "main": [
+        [
+          {
+            "node": "Wait 30s Before Retry",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Final Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 30s Before Retry": {
+      "main": [
+        [
+          {
+            "node": "Slack Retry Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Final Alert": {
+      "main": [
+        [
+          {
+            "node": "Slack Final Alert",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email Final Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

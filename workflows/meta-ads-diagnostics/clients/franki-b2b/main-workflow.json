@@ -1,0 +1,358 @@
+{
+  "name": "Franki B2B - Meta Ads Diagnostics v9",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1,5"
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger-v9",
+      "name": "Monday/Friday 9AM PST",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -220,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "client-config-v9",
+              "name": "clientConfig",
+              "type": "object",
+              "value": {
+                "CLIENT_NAME": "Franki B2B",
+                "PLATFORM": "Meta Ads",
+                "ACCOUNT_ID": "815256732728440",
+                "GOMARBLE_CREDENTIAL": "Bearer Auth account",
+                "SLACK_CHANNEL": "internal_franki_b2b_reports",
+                "ERROR_SLACK_CHANNEL": "internal_franki_b2b_reports",
+                "ERROR_EMAIL": "malachi@mavan.com",
+                "PRIORITY_EVENTS": "Lead, Demo Request, Contact",
+                "REPORT_SCHEDULE": "0 9 * * 1,5 (Monday/Friday 9AM PST)"
+              }
+            },
+            {
+              "id": "thresholds-v9",
+              "name": "thresholds",
+              "type": "object",
+              "value": {
+                "ROAS_GOOD": ">1.5",
+                "ROAS_OK": "1.0-1.5",
+                "CAC_TARGET": "$100",
+                "FREQUENCY_MAX": "3.0",
+                "NO_CONV_SPEND_MIN": "$250",
+                "HIGH_CAC_THRESHOLD": "$150",
+                "CTR_DROP_THRESHOLD": "30%",
+                "CPM_SPIKE_THRESHOLD": "25%"
+              }
+            },
+            {
+              "id": "prompt-field-v9",
+              "name": "prompt",
+              "type": "string",
+              "value": "=== CLIENT CONFIGURATION ===\nCLIENT_NAME: Franki B2B\nPLATFORM: Meta Ads\nACCOUNT_ID: 815256732728440\nGOMARBLE_CREDENTIAL: Bearer Auth account (configured in n8n)\nSLACK_CHANNEL: internal_franki_b2b_reports\nPRIORITY_EVENTS: Lead, Demo Request, Contact\nREPORT_SCHEDULE: 0 9 * * 1,5 (Monday/Friday 9AM PST)\n===========================\n\n=== PERFORMANCE THRESHOLDS ===\nROAS_GOOD: >1.5\nROAS_OK: 1.0-1.5\nCAC_TARGET: $100\nFREQUENCY_MAX: 3.0\nNO_CONV_SPEND_MIN: $250\nHIGH_CAC_THRESHOLD: $150\nCTR_DROP_THRESHOLD: 30%\nCPM_SPIKE_THRESHOLD: 25%\n===========================\n\nYou are a senior Meta Ads performance analyst for Franki B2B. Execute a diagnostics checklist for account ID \"815256732728440\" and output ONLY the final report.\n\nCRITICAL: Start output IMMEDIATELY with \"`META ADS DIAGNOSTICS REPORT`\" on the first line, followed by the full header line.\nNEVER include preamble text like \"Based on the data I've retrieved\" or \"I'll now create\" or ANY other text before the report title.\n\nDATA RETRIEVAL & VALIDATION:\n- Use GoMarble MCP tools to retrieve actual campaign names, creative names, and performance data\n- IMPORTANT: Retrieve data for THREE time periods:\n  * Yesterday (1 day)\n  * Day before yesterday (1 day) - for DoD% calculation\n  * Last 7 days (L7D): Yesterday and 6 days prior (full 7-day period)\n  * Previous 7 days (P7D): Days -8 through -14 (full 7-day comparison period)\n- Use PST/PDT timezone for all date calculations\n- If data is missing or incomplete, mark as \"Data unavailable\" with context\n- Exclude sandbox, testing, or draft campaigns from main analysis\n\nCAMPAIGN & CREATIVE NAMING:\n- Always use actual campaign names from the data, never placeholders\n- Always use actual creative names and ad set names from the data\n- If names are >30 characters, truncate with \"...\"\n- Display real performance data, not placeholder values\n\nTRACKING EVENTS CONFIGURATION:\n- Only include conversion events that have historical data (>0 conversions in any recent 7-day period)\n- Skip any events that have been consistently zero across all periods\n- For Franki B2B account, prioritize: Lead, Demo Request, Contact\n\nTABLE FORMATTING RULES:\n- Use consistent column widths throughout each table\n- Ensure divider lines align perfectly between header and data rows\n- Add 1-2 extra spaces for padding to prevent wrapping\n- Test alignment by checking that all \"|\" characters line up vertically\n\nCRITICAL FORMATTING RULES:\n- Use code blocks (```) for all tables to ensure proper alignment\n- Use trend arrows: \u2197\ufe0f for positive, \u2198\ufe0f for negative, \u27a1\ufe0f for flat\n- Use status emojis: \ud83d\udfe2 Strong/Good, \ud83d\udfe1 Moderate/OK, \ud83d\udd34 Poor/Alert\n- Use single asterisks (*) for Slack bold formatting\n- Keep total report under 60 lines to prevent truncation\n- Date format: Always use \"Aug 22, 2025\" format (abbreviated month, day, full year)\n\nRequired output format:\n\n`META ADS DIAGNOSTICS REPORT`\nFranki B2B - Account ID: 815256732728440 - Date: [Month Day, Year format]\n\n*1. CORE PERFORMANCE METRICS*\nLast 7 Days (L7D) vs Previous 7 Days (P7D):\n\n```\nStatus | Metric          | Yesterday | DoD % | L7D          | P7D       | WoW %\n-------|-----------------|-----------|-------|--------------|-----------|-------\n\ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34 | Spend           | $X,XXX    | \u00b1XX%  | $X,XXX       | $X,XXX    | \u00b1XX%\n\ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34 | CPM             | $XX.XX    | \u00b1XX%  | $XX.XX       | $XX.XX    | \u00b1XX%\n\ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34 | CPC             | $X.XX     | \u00b1XX%  | $X.XX        | $X.XX     | \u00b1XX%\n\ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34 | CTR             | X.XX%     | \u00b1XX%  | X.XX%        | X.XX%     | \u00b1XX%\n\ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34 | Conversions     | XXX       | \u00b1XX%  | XXX          | XXX       | \u00b1XX%\n\ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34 | CAC             | $XXX.XX   | \u00b1XX%  | $XXX.XX      | $XXX.XX   | \u00b1XX%\n\ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34 | Conversion Rate | X.XX%     | \u00b1XX%  | X.XX%        | X.XX%     | \u00b1XX%\n\ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34 | ROAS            | X.XXx     | \u00b1XX%  | X.XXx        | X.XXx     | \u00b1XX%\n```\n\n*2A. CAMPAIGN PERFORMANCE (Last 7 Days)*\n\n```\nCampaign (30 char)             | Spend  | WoW%  | CPM    | WoW%  | CTR    | WoW%  | Conv | WoW%  | Status\n-------------------------------|--------|-------|--------|-------|--------|-------|------|-------|--------\n[Actual Campaign Name]...      | $X,XXX | \u00b1XX%  | $XX.XX | \u00b1XX%  | X.XX%  | \u00b1XX%  | XXX  | \u00b1XX%  | \ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34\n[Actual Campaign Name]...      | $X,XXX | \u00b1XX%  | $XX.XX | \u00b1XX%  | X.XX%  | \u00b1XX%  | XXX  | \u00b1XX%  | \ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34\n[Top 5 campaigns by spend]     | $X,XXX | \u00b1XX%  | $XX.XX | \u00b1XX%  | X.XX%  | \u00b1XX%  | XXX  | \u00b1XX%  | \ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34\n```\n\n*2B. CAMPAIGN EFFICIENCY (Last 7 Days)*\n\n```\nCampaign (30 char)             | CPC    | WoW%  | CAC     | WoW%  | C.Rate | WoW%  | ROAS  | WoW%  | Status\n-------------------------------|--------|-------|---------|-------|--------|-------|-------|-------|--------\n[Actual Campaign Name]...      | $X.XX  | \u00b1XX%  | $XXX.XX | \u00b1XX%  | X.XX%  | \u00b1XX%  | X.XXx | \u00b1XX%  | \ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34\n[Actual Campaign Name]...      | $X.XX  | \u00b1XX%  | $XXX.XX | \u00b1XX%  | X.XX%  | \u00b1XX%  | X.XXx | \u00b1XX%  | \ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34\n[Top 5 campaigns by spend]     | $X.XX  | \u00b1XX%  | $XXX.XX | \u00b1XX%  | X.XX%  | \u00b1XX%  | X.XXx | \u00b1XX%  | \ud83d\udfe2/\ud83d\udfe1/\ud83d\udd34\n```\n\n*3. CREATIVE PERFORMANCE SUMMARY*\n\nAlert Summary (Last 7 Days):\n\ud83d\udd34 High Frequency (>3.0): X creatives affecting $X,XXX spend\n\ud83d\udd34 No Conversions (>$250): X creatives wasting $X,XXX\n\ud83d\udfe1 High CAC (>$100): X creatives averaging $XXX CAC\n\ud83d\udfe1 CTR Drop (>30%): X creatives with declining performance\n\nTop 3 Priority Actions:\n\u2022 [Creative Name] in [Ad Set]: [Specific issue] - [Action]\n\u2022 [Creative Name] in [Ad Set]: [Specific issue] - [Action]\n\u2022 [Creative Name] in [Ad Set]: [Specific issue] - [Action]\n\n*4. TRACKING CHECK*\nOnly show if there are tracking issues (>30% drops or zeros):\n\n\u26a0\ufe0f TRACKING ALERTS:\n\u2022 [Event] dropped XX% - check pixel implementation\n\u2022 [Event] at zero - verify tracking setup\n\nIf no issues, show: All conversion events tracking normally \ud83d\udfe2\n\n*STATUS SUMMARY:*\n\ud83d\udfe2 ALL SYSTEMS NORMAL / \ud83d\udfe1 ATTENTION NEEDED / \ud83d\udd34 PRIORITY ISSUES\n\nTotal spend: $X,XXX | Efficiency: XX% profitable (ROAS >1)\n\n*Requiring Attention:*\n\u2022 [Top priority issue with specific campaign/creative]\n\u2022 [Second priority issue]\n\u2022 [Third priority issue]\n\n*KEY CHANGES THIS REPORT:*\n\u2022 [Primary driver: e.g., AU_BAU_Advantage+ drove -24% ROAS decline with $3K spend at 0.72x]\n\u2022 [Secondary factor: e.g., CPM stable but CTR down 10% suggesting creative fatigue]\n\u2022 [Third insight: e.g., Remarketing maintaining 2.5x+ ROAS, scale opportunity]\n\n---\nData timestamp: [Last updated] | Report generated: [Current time in Month Day, Year format]\n\nPERFORMANCE THRESHOLDS:\n- ROAS: >1.0 = \ud83d\udfe2, 0.8-1.0 = \ud83d\udfe1, <0.8 = \ud83d\udd34\n- CAC trends: improving = \ud83d\udfe2, stable = \ud83d\udfe1, worsening = \ud83d\udd34\n- Frequency: <2.0 = \ud83d\udfe2, 2.0-3.0 = \ud83d\udfe1, >3.0 = \ud83d\udd34\n- Conversion tracking: <30% decline = \ud83d\udfe2, 30-70% = \ud83d\udfe1, >70% = \ud83d\udd34\n\nAnalyze the actual account data and populate all sections with real numbers and names. Only include tracking events that have historical conversion data."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "v9-config-prompt",
+      "name": "v9 Client Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        40,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "options": {
+          "systemMessage": "You are an expert Meta Ads analyst with access to comprehensive advertising data through GoMarble MCP tools. Retrieve actual campaign names, creative names, and ad set names from performance data. START IMMEDIATELY with '`META ADS DIAGNOSTICS REPORT`' - no preamble text. Use condensed creative alerts format showing counts and top 3 priority actions only. Ensure perfect table alignment and include Key Changes section. Single asterisks for Slack formatting. Keep under 60 lines total. Orange title formatting with backticks.",
+          "maxIterations": 25
+        }
+      },
+      "id": "v9-ai-agent",
+      "name": "v9 Production AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        360,
+        340
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://apps.gomarble.ai/mcp-api/sse",
+        "authentication": "bearerAuth"
+      },
+      "id": "gomarble-mcp-v9",
+      "name": "GoMarble MCP Client",
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.1,
+      "position": [
+        540,
+        580
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "xdh6Yp722ibHs9Nd",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-20250514",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "anthropic-model-v9",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        380,
+        580
+      ],
+      "credentials": {
+        "anthropicApi": {
+          "id": "6L1pdyKeE7yG7BA1",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "success-check",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-success",
+      "name": "Check for Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        620,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C099UCKL8SW",
+          "mode": "list",
+          "cachedResultName": "internal_franki_b2b_reports"
+        },
+        "text": "={{ $json.output }}",
+        "otherOptions": {
+          "mrkdwn": true
+        }
+      },
+      "id": "slack-post-success-v9",
+      "name": "Slack Post Success",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        820,
+        260
+      ],
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "kPX3XYbf07UU7kTC",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "error-details-v9",
+              "name": "errorDetails",
+              "type": "object",
+              "value": {
+                "workflowName": "Franki B2B - Meta Ads Diagnostics v9",
+                "clientName": "Franki B2B",
+                "errorSlackChannel": "internal_franki_b2b_reports",
+                "errorEmail": "malachi@mavan.com",
+                "executionId": "={{ $execution.id }}",
+                "failedNode": "v9 Production AI Agent",
+                "errorMessage": "={{ $json.error?.message || 'Workflow execution failed' }}",
+                "executionUrl": "={{ 'https://mavan.app.n8n.cloud/executions/' + $execution.id }}",
+                "timestamp": "={{ $now }}"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "prepare-error-data",
+      "name": "Prepare Error Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        820,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C099UCKL8SW",
+          "mode": "list",
+          "cachedResultName": "internal_franki_b2b_reports"
+        },
+        "text": "\ud83d\udea8 *WORKFLOW FAILURE ALERT*\n\n*Workflow*: {{ $json.errorDetails.workflowName }}\n*Client*: {{ $json.errorDetails.clientName }}\n*Failed Node*: {{ $json.errorDetails.failedNode }}\n*Error*: {{ $json.errorDetails.errorMessage }}\n*Time*: {{ $json.errorDetails.timestamp }}\n*Execution ID*: {{ $json.errorDetails.executionId }}\n\n*Debug Link*: {{ $json.errorDetails.executionUrl }}\n\n\u2757 *Action Required*: Please investigate and resolve the issue.",
+        "otherOptions": {
+          "mrkdwn": true
+        }
+      },
+      "id": "slack-post-error-v9",
+      "name": "Slack Post Error",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1020,
+        420
+      ],
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "kPX3XYbf07UU7kTC",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Monday/Friday 9AM PST": {
+      "main": [
+        [
+          {
+            "node": "v9 Client Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "v9 Client Configuration": {
+      "main": [
+        [
+          {
+            "node": "v9 Production AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "v9 Production AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Check for Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check for Success": {
+      "main": [
+        [
+          {
+            "node": "Slack Post Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Error Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Error Data": {
+      "main": [
+        [
+          {
+            "node": "Slack Post Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GoMarble MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "v9 Production AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "v9 Production AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
