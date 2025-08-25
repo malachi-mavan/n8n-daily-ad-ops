@@ -36,3 +36,9 @@ Y53KKM9A2hZed1T6|[0;34mDeploying Error Handler for Franki B2B...[0m
    Workflow ID: uVvkcnAGFItqzNyM
    URL: https://mavan.app.n8n.cloud/workflow/uVvkcnAGFItqzNyM
 uVvkcnAGFItqzNyM
+
+# Updated Deployment - Fri Aug 22 21:31:39 PDT 2025
+Franki B2B|57OEarnmgoMsqZqK|OsmAxT6WmV2in0ts
+
+# Updated Deployment - Fri Aug 23 04:43:38 PDT 2025
+Franki B2B|oq98Be2FqCY7VXpl|INTEGRATED
